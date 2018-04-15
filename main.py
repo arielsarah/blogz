@@ -26,15 +26,11 @@ class Blog_Post(db.Model):
 def blog():
 
     blog_posts = Blog_Post.query.all()
-    return render_template('blog.html', title="Build a Blog!", blog_posts=blog_posts)
-
-@app.route('/blog-entry', methods=['POST', 'GET'])
-def blog_entry():
-
     entry_id = request.args.get('id')
-    blog_entry = Blog_Post.query.filter_by(id=entry_id).first()
-    return render_template('blog-entry.html', title="Build a Blog!", blog_entry=blog_entry)
-
+    if entry_id:
+        blog_entry = Blog_Post.query.filter_by(id=entry_id).first()
+        return render_template('blog-entry.html', title="Build a Blog!", blog_entry=blog_entry)
+    return render_template('blog.html', title="Build a Blog!", blog_posts=blog_posts)
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
@@ -51,7 +47,7 @@ def newpost():
         new_post = Blog_Post(post_name, post_body)
         db.session.add(new_post)
         db.session.commit()
-        return redirect('/blog')
+        return redirect('/blog?id='+ str(new_post.id))
 
     return render_template('new-post.html',title="Build a Blog!")
 
