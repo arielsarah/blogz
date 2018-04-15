@@ -28,6 +28,14 @@ def blog():
     blog_posts = Blog_Post.query.all()
     return render_template('blog.html', title="Build a Blog!", blog_posts=blog_posts)
 
+@app.route('/blog-entry', methods=['POST', 'GET'])
+def blog_entry():
+
+    entry_id = request.args.get('id')
+    blog_entry = Blog_Post.query.filter_by(id=entry_id).first()
+    return render_template('blog-entry.html', title="Build a Blog!", blog_entry=blog_entry)
+
+
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
