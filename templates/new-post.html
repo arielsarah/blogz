@@ -3,35 +3,15 @@
 {% block content %}
         <h1>Build a Blog!</h1>
         <form method='post'>
-            <label>
-                New Post Name:
-                <input type="text" name='blog_post' />
-            </label>
-            <label>
+            <label for="blog_post">
                 New Post:
-                <input type="textarea" name='blog_text' />
+                
             </label>
+            <input type="text" name='blog_post' value="{{blog_name}}" />
+            <br>
+                <textarea row="4" cols="50" name='blog_text'>{{blog_text}}</textarea>
             <input type="submit" value='Add Post' />
         </form>
-
-        <hr />
-
-        {% if blog_posts|length == 0 %}
-        <p>No posts yet</p>
-        {% else %}
-
-            <div>
-                {% for blog_post in blog_posts %}
-                <h3>{{blog_post.name}}
-                    
-                </h3>
-                <p>{{blog_post.body}}
-                    
-                </p>
-                {% endfor %}
-            </div>
-
-        {% endif %}
 
         <hr />
 
