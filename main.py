@@ -33,6 +33,12 @@ class User(db.Model):
        self.password = password
 
 
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'signup', 'blog', 'index']
+    if request.endpoint not in allowed_routes and 'email' not in session:
+        return redirect('/login')
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -105,12 +111,17 @@ def signup():
 @app.route('/logout')
 def logout():
     del session['email']
-    return redirect('/login')
+    return redirect('/blog')
+
+@app.route('/')
+def index():
+    users = User.query.all()
+    return render_template('index.html', users=users)
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
 
-    blog_posts = Blog_Post.query.filter_by(user=session['email']).all()
+    blog_posts = Blog_Post.query.all()
     entry_id = request.args.get('id')
     if entry_id:
         blog_entry = Blog_Post.query.filter_by(id=entry_id).first()
