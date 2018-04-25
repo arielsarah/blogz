@@ -123,9 +123,13 @@ def blog():
 
     blog_posts = Blog_Post.query.all()
     entry_id = request.args.get('id')
+    user = request.args.get('user')
     if entry_id:
         blog_entry = Blog_Post.query.filter_by(id=entry_id).first()
         return render_template('blog-entry.html', title="Build a Blog!", blog_entry=blog_entry)
+    elif user:
+        blog_posts = Blog_Post.query.filter_by(owner_id=user).all()
+
     return render_template('blog.html', title="Build a Blog!", blog_posts=blog_posts)
 
 
@@ -134,7 +138,7 @@ def newpost():
     if request.method == 'POST':
         post_name = request.form['blog_post']
         post_body = request.form['blog_text']
-        post_owner = User.query.filter_by(email=session['user']).first()
+        post_owner = User.query.filter_by(username=session['email']).first()
         if post_name == "":
             flash("Please enter a Post Name")
             return render_template('new-post.html', title="Build a Blog!", blog_text=post_body)
