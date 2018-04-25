@@ -102,6 +102,11 @@ def signup():
 
     return render_template('signup.html')
 
+@app.route('/logout')
+def logout():
+    del session['email']
+    return redirect('/login')
+
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
 

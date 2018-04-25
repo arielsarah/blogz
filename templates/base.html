@@ -13,6 +13,16 @@
         <div>
             <a href='/newpost'>Add New Post</a href>
         </div>
+        {% if session['email'] %}
+            <div>
+                <a href='/logout'>log out</a href>
+            </div>
+        {% else %}
+            <div>
+                <a href='/login'>log in</a href>
+            </div>
+        {% endif %}
+
         {% with messages = get_flashed_messages(with_categories=True) %}
             <ul>
             {% for category,message in messages %}
